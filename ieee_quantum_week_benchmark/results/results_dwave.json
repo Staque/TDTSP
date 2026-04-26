@@ -1,0 +1,47 @@
+[
+  {
+    "n": 5,
+    "distance": 227.34999999999997,
+    "raw_distance": 227.34999999999997,
+    "time": 24.181118726730347,
+    "status": "optimal",
+    "solver": "Cluster-D-Wave",
+    "n_clusters": 1
+  },
+  {
+    "n": 10,
+    "distance": 290.31,
+    "raw_distance": 290.31,
+    "time": 20.7567720413208,
+    "status": "optimal",
+    "solver": "Cluster-D-Wave",
+    "n_clusters": 1
+  },
+  {
+    "n": 25,
+    "distance": 415.96,
+    "raw_distance": 539.17,
+    "time": 44.64957141876221,
+    "status": "optimal",
+    "solver": "Cluster-D-Wave",
+    "n_clusters": 2
+  },
+  {
+    "n": 50,
+    "distance": 591.58,
+    "raw_distance": 687.3099999999998,
+    "time": 85.35781764984131,
+    "status": "optimal",
+    "solver": "Cluster-D-Wave",
+    "n_clusters": 4
+  },
+  {
+    "n": 100,
+    "distance": 781.5599999999998,
+    "raw_distance": 963.3099999999995,
+    "time": 151.84506130218506,
+    "status": "optimal",
+    "solver": "Cluster-D-Wave",
+    "n_clusters": 7
+  }
+]
