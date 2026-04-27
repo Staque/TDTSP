@@ -211,7 +211,7 @@ class QAOATSPSolver:
             return {'status': 'error', 'message': 'Need at least 2 locations'}
         
         if n > 5 and self.device_name == 'sv1':
-            print(f"⚠️ Warning: {n} cities requires {n*n} qubits. May be slow on simulator.")
+            print(f"Warning: {n} cities requires {n*n} qubits. May be slow on simulator.")
         
         print("\n" + "="*70)
         print(f"QAOA TSP SOLVER - AWS Braket ({self.device_name.upper()})")
@@ -239,7 +239,7 @@ class QAOATSPSolver:
             build_start = time.time()
             Q, num_qubits = self._tsp_to_qubo(n, distance_matrix)
             build_time = time.time() - build_start
-            print(f"✅ QUBO built in {build_time:.3f}s ({len(Q)} terms)")
+            print(f"QUBO built in {build_time:.3f}s ({len(Q)} terms)")
             
             # Initial angles (can be optimized)
             if optimize_angles and n <= 4:
@@ -277,11 +277,11 @@ class QAOATSPSolver:
                     circuit.rx(i, 2 * beta)
             
             circuit_time = time.time() - circuit_start
-            print(f"✅ Circuit built in {circuit_time:.3f}s")
+            print(f"Circuit built in {circuit_time:.3f}s")
             print(f"   Circuit depth: {circuit.depth}")
             
             # Run on device
-            print(f"\n🔄 Submitting to {self.device_name.upper()}...")
+            print(f"\nSubmitting to {self.device_name.upper()}...")
             submit_start = time.time()
             
             # Create AWS session with explicit credentials
@@ -301,7 +301,7 @@ class QAOATSPSolver:
             result = task.result()
             
             submit_time = time.time() - submit_start
-            print(f"✅ Received response in {submit_time:.3f}s")
+            print(f"Received response in {submit_time:.3f}s")
             
             # Process results
             measurements = result.measurement_counts
@@ -324,7 +324,7 @@ class QAOATSPSolver:
                         best_tour = tour
             
             if best_tour is None:
-                print("⚠️ No valid tour found in measurements")
+                print("No valid tour found in measurements")
                 # Try to construct a tour heuristically
                 best_tour = list(range(n))
                 best_distance = sum(
@@ -334,7 +334,7 @@ class QAOATSPSolver:
                 is_valid = False
             else:
                 is_valid = True
-                print(f"✅ Found {valid_count}/{shots} valid measurements")
+                print(f"Found {valid_count}/{shots} valid measurements")
             
             # Reorder tour if start_location specified
             if start_location and start_location in locations:
@@ -389,7 +389,7 @@ class QAOATSPSolver:
             
         except Exception as e:
             import traceback
-            print(f"❌ Error: {str(e)}")
+            print(f"Error: {str(e)}")
             traceback.print_exc()
             return {
                 'status': 'error',
@@ -414,7 +414,7 @@ class QAOATSPSolver:
 def test_qaoa_solver():
     """Test the QAOA TSP solver with a sample problem"""
     print("\n" + "="*70)
-    print("🧪 TESTING QAOA TSP SOLVER (SV1)")
+    print("TESTING QAOA TSP SOLVER (SV1)")
     print("="*70)
     
     # Small problem for simulator (4 cities = 16 qubits)
@@ -431,10 +431,10 @@ def test_qaoa_solver():
     results = solver.solve_tsp(locations, distance_matrix, p=1, shots=100)
     
     if results.get('status') in ['optimal', 'heuristic']:
-        print("\n✅ TEST PASSED")
+        print("\nTEST PASSED")
         return True
     else:
-        print(f"\n❌ TEST FAILED: {results.get('message', 'Unknown error')}")
+        print(f"\nTEST FAILED: {results.get('message', 'Unknown error')}")
         return False
 
 

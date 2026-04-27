@@ -47,8 +47,7 @@ class ClusterDWaveTSPSolver:
         self.verbose = verbose
         self.timing_info = {}
         
-        # Import D-Wave solver
-        from solvers.tsp_dwave_solver import DWaveTSPSolver
+        from .tsp_dwave_solver import DWaveTSPSolver
         self.dwave_solver = DWaveTSPSolver()
     
     def _estimate_coordinates(self, distance_matrix: List[List[float]]) -> np.ndarray:

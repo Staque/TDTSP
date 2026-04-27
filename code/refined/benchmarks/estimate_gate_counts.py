@@ -1,10 +1,7 @@
 """
-Estimate gate counts for QAOA TSP circuits on Rigetti
-Determines maximum problem size within 20,000 gate limit
+Estimate gate counts for QAOA TSP circuits on Rigetti.
+Determines the maximum problem size within the 20,000-gate compilation limit.
 """
-import sys
-if sys.platform == 'win32':
-    sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 
 print("=" * 70)
 print("QAOA TSP GATE COUNT ESTIMATION FOR RIGETTI")

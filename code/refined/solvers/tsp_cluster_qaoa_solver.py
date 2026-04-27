@@ -705,7 +705,7 @@ class ClusterQAOATSPSolver:
         except Exception as e:
             import traceback
             if self.verbose:
-                print(f"\n❌ Error: {str(e)}")
+                print(f"\nError: {str(e)}")
                 traceback.print_exc()
             return {
                 'status': 'error',

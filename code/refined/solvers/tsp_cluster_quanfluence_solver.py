@@ -48,10 +48,9 @@ class ClusterQuanfluenceTSPSolver:
         self.verbose = verbose
         self.timing_info = {}
         
-        # Import Quanfluence solver for cluster solving
-        from solvers.tsp_quanfluence_solver import QuanfluenceTSPSolver
+        from .tsp_quanfluence_solver import QuanfluenceTSPSolver
         self.qf_solver = QuanfluenceTSPSolver(
-            use_local_search=False,  # We'll do 2-opt at the end
+            use_local_search=False,
             local_search_method='2opt'
         )
     

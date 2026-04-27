@@ -46,17 +46,17 @@ class TSPSolver:
             n = len(locations)
             
             if n < 2:
-                print("❌ Error: Need at least 2 locations for TSP")
+                print("Error: Need at least 2 locations for TSP")
                 return {}
             
             if len(distance_matrix) != n or any(len(row) != n for row in distance_matrix):
-                print(f"❌ Error: Distance matrix must be {n}x{n}")
+                print(f"Error: Distance matrix must be {n}x{n}")
                 return {}
             
             # Determine start index
             if start_location:
                 if start_location not in locations:
-                    print(f"❌ Error: Start location '{start_location}' not in locations list")
+                    print(f"Error: Start location '{start_location}' not in locations list")
                     return {}
                 start_idx = locations.index(start_location)
             else:
@@ -120,12 +120,12 @@ class TSPSolver:
                         )
             
             # Optimize
-            print("\n🔄 Optimizing...")
+            print("\nOptimizing...")
             self.model.optimize()
             
             # Extract results
             if self.model.status == GRB.OPTIMAL:
-                print("✅ Optimal solution found!")
+                print("Optimal solution found!")
                 
                 # Build tour by following the x variables
                 tour = [start_idx]
@@ -165,7 +165,7 @@ class TSPSolver:
                     from_loc = locations[tour[i]]
                     to_loc = locations[tour[(i + 1) % len(tour)]]
                     dist = distance_matrix[tour[i]][tour[(i + 1) % len(tour)]]
-                    print(f"  {from_loc} → {to_loc}: {dist:.2f}")
+                    print(f"  {from_loc} -> {to_loc}: {dist:.2f}")
                 
                 print("="*70)
                 
@@ -183,14 +183,14 @@ class TSPSolver:
                 return results
             
             else:
-                print(f"❌ Optimization failed. Status: {self.model.status}")
+                print(f"Optimization failed. Status: {self.model.status}")
                 return {
                     'status': 'failed',
                     'model_status': self.model.status
                 }
         
         except Exception as e:
-            print(f"❌ Error in TSP optimization: {str(e)}")
+            print(f"Error in TSP optimization: {str(e)}")
             import traceback
             traceback.print_exc()
             return {}
@@ -233,7 +233,7 @@ def test_tsp_solver():
     Test the TSP solver with a sample problem
     """
     print("\n" + "="*70)
-    print("🧪 TESTING TSP SOLVER")
+    print("TESTING TSP SOLVER")
     print("="*70)
     
     # Sample problem: 5 cities
@@ -260,16 +260,16 @@ def test_tsp_solver():
     results = solver.solve_tsp(locations, distance_matrix)
     
     if results and results.get('status') == 'optimal':
-        print("\n✅ TEST PASSED: TSP solver working correctly!")
+        print("\nTEST PASSED: TSP solver working correctly!")
         
         # Create and display DataFrame
         df = solver.create_tour_dataframe(results)
-        print("\n📊 Tour DataFrame:")
+        print("\nTour DataFrame:")
         print(df.to_string(index=False))
         
         return True
     else:
-        print("\n❌ TEST FAILED: TSP solver did not find optimal solution")
+        print("\nTEST FAILED: TSP solver did not find optimal solution")
         return False
 
 
@@ -279,10 +279,10 @@ if __name__ == "__main__":
     
     if success:
         print("\n" + "="*70)
-        print("🎉 TSP SOLVER READY FOR STEP 3!")
+        print("TSP SOLVER READY FOR STEP 3!")
         print("="*70)
-        print("\n📋 Next: Integrate with Google Maps API for real distances")
+        print("\nNext: Integrate with Google Maps API for real distances")
         print("   Tell the assistant: 'Start Step 3'")
     else:
-        print("\n⚠️  Please check the errors above")
+        print("\nPlease check the errors above")
 

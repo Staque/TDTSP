@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Build artefacts
+build/
+dist/
+*.egg-info/
+
+# AWS Braket task caches and logs
+.amazon-braket/
+*.log
+
+# OS / editor
+.DS_Store
+Thumbs.db
+gurobi.lic
+.idea/
+.vscode/
+
+# LaTeX build artefacts
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.synctex.gz
+*.toc
+*.env
+

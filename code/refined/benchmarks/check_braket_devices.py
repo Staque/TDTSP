@@ -1,9 +1,4 @@
-"""Check AWS Braket device availability"""
-import sys
-import os
-if sys.platform == 'win32':
-    sys.stdout.reconfigure(encoding='utf-8', errors='replace')
-
+"""Check AWS Braket device availability."""
 from dotenv import load_dotenv
 load_dotenv()
 

@@ -146,29 +146,29 @@ class DWaveTSPSolver:
             build_start = time.time()
             cqm, x = self._build_cqm(n, distance_matrix)
             build_time = time.time() - build_start
-            print(f"✅ CQM built in {build_time:.3f}s")
+            print(f"CQM built in {build_time:.3f}s")
             
             # Submit to D-Wave
-            print("\n🔄 Submitting to D-Wave hybrid solver...")
+            print("\nSubmitting to D-Wave hybrid solver...")
             submit_start = time.time()
             
             sampler = self._get_sampler()
             sampleset = sampler.sample_cqm(cqm, time_limit=time_limit)
             
             submit_time = time.time() - submit_start
-            print(f"✅ Received response in {submit_time:.3f}s")
+            print(f"Received response in {submit_time:.3f}s")
             
             # Get feasible samples
             feasible = sampleset.filter(lambda s: s.is_feasible)
             
             if len(feasible) == 0:
-                print("⚠️ No feasible solution found, using best sample")
+                print("No feasible solution found, using best sample")
                 best_sample = sampleset.first.sample
                 is_feasible = False
             else:
                 best_sample = feasible.first.sample
                 is_feasible = True
-                print(f"✅ Found {len(feasible)} feasible solutions")
+                print(f"Found {len(feasible)} feasible solutions")
             
             # Extract tour
             tour = self._extract_tour(best_sample, n)
@@ -239,7 +239,7 @@ class DWaveTSPSolver:
             
         except Exception as e:
             import traceback
-            print(f"❌ Error: {str(e)}")
+            print(f"Error: {str(e)}")
             traceback.print_exc()
             return {
                 'status': 'error',
@@ -251,7 +251,7 @@ class DWaveTSPSolver:
 def test_dwave_solver():
     """Test the D-Wave TSP solver with a sample problem"""
     print("\n" + "="*70)
-    print("🧪 TESTING D-WAVE TSP SOLVER")
+    print("TESTING D-WAVE TSP SOLVER")
     print("="*70)
     
     # Sample problem: 5 cities
@@ -269,10 +269,10 @@ def test_dwave_solver():
     results = solver.solve_tsp(locations, distance_matrix, time_limit=30)
     
     if results.get('status') in ['optimal', 'feasible']:
-        print("\n✅ TEST PASSED")
+        print("\nTEST PASSED")
         return True
     else:
-        print(f"\n❌ TEST FAILED: {results.get('message', 'Unknown error')}")
+        print(f"\nTEST FAILED: {results.get('message', 'Unknown error')}")
         return False
 
 
