@@ -1,0 +1,432 @@
+{
+  "n": 5,
+  "variant": "tdtsp",
+  "source": "google_maps_distance_matrix_api",
+  "metric": "driving_duration_seconds",
+  "city": "New York",
+  "tz": "America/New_York",
+  "anchor_monday": "2026-05-04",
+  "baseline": "03:00 America/New_York on 2026-05-04 (off-peak reference)",
+  "start_time_slot": "morning_peak",
+  "start_time_local": "08:00",
+  "start_time_tz": "America/New_York",
+  "multipliers": {
+    "nominal": {
+      "morning_peak": 1.5,
+      "midday": 1.0,
+      "evening_peak": 1.6,
+      "night": 0.8
+    },
+    "computed": {
+      "morning_peak": 1.5183,
+      "midday": 1.5214,
+      "evening_peak": 1.5912,
+      "night": 1.2971
+    }
+  },
+  "locations": [
+    "Times Square, New York, NY",
+    "Wall Street, New York, NY",
+    "Central Park, New York, NY",
+    "Brooklyn Bridge, New York, NY",
+    "Penn Station, New York, NY"
+  ],
+  "coords": [
+    [
+      40.757975,
+      -73.985543
+    ],
+    [
+      40.706068,
+      -74.008905
+    ],
+    [
+      40.782555,
+      -73.965583
+    ],
+    [
+      40.706086,
+      -73.996864
+    ],
+    [
+      40.750568,
+      -73.993519
+    ]
+  ],
+  "base_distance_matrix": [
+    [
+      0.0,
+      1009.0,
+      218.0,
+      830.0,
+      178.0
+    ],
+    [
+      941.0,
+      0.0,
+      953.0,
+      252.0,
+      1012.0
+    ],
+    [
+      290.0,
+      1028.0,
+      0.0,
+      853.0,
+      510.0
+    ],
+    [
+      844.0,
+      410.0,
+      865.0,
+      0.0,
+      850.0
+    ],
+    [
+      250.0,
+      960.0,
+      381.0,
+      691.0,
+      0.0
+    ]
+  ],
+  "time_slots": [
+    {
+      "name": "morning_peak",
+      "label": "Morning Peak (8 AM)",
+      "hour": 8,
+      "departure_iso": "2026-05-04T08:00:00-04:00",
+      "nominal_multiplier": 1.5,
+      "multiplier": 1.5183,
+      "multiplier_per_pair_min": 1.1414,
+      "multiplier_per_pair_max": 1.8031,
+      "distance_matrix": [
+        [
+          0.0,
+          1531.96,
+          330.99,
+          1260.19,
+          270.26
+        ],
+        [
+          1428.72,
+          0.0,
+          1446.94,
+          382.61,
+          1536.52
+        ],
+        [
+          440.31,
+          1560.81,
+          0.0,
+          1295.11,
+          774.33
+        ],
+        [
+          1281.45,
+          622.5,
+          1313.33,
+          0.0,
+          1290.56
+        ],
+        [
+          379.57,
+          1457.57,
+          578.47,
+          1049.15,
+          0.0
+        ]
+      ],
+      "duration_in_traffic_matrix": [
+        [
+          0.0,
+          1563.0,
+          345.0,
+          1309.0,
+          291.0
+        ],
+        [
+          1475.0,
+          0.0,
+          1528.0,
+          346.0,
+          1338.0
+        ],
+        [
+          331.0,
+          1588.0,
+          0.0,
+          1302.0,
+          658.0
+        ],
+        [
+          1325.0,
+          547.0,
+          1365.0,
+          0.0,
+          1312.0
+        ],
+        [
+          449.0,
+          1368.0,
+          687.0,
+          1109.0,
+          0.0
+        ]
+      ]
+    },
+    {
+      "name": "midday",
+      "label": "Midday (12 PM)",
+      "hour": 12,
+      "departure_iso": "2026-05-04T12:00:00-04:00",
+      "nominal_multiplier": 1.0,
+      "multiplier": 1.5214,
+      "multiplier_per_pair_min": 1.254,
+      "multiplier_per_pair_max": 1.952,
+      "distance_matrix": [
+        [
+          0.0,
+          1535.09,
+          331.67,
+          1262.76,
+          270.81
+        ],
+        [
+          1431.64,
+          0.0,
+          1449.89,
+          383.39,
+          1539.66
+        ],
+        [
+          441.21,
+          1564.0,
+          0.0,
+          1297.75,
+          775.91
+        ],
+        [
+          1284.06,
+          623.77,
+          1316.01,
+          0.0,
+          1293.19
+        ],
+        [
+          380.35,
+          1460.54,
+          579.65,
+          1051.29,
+          0.0
+        ]
+      ],
+      "duration_in_traffic_matrix": [
+        [
+          0.0,
+          1497.0,
+          367.0,
+          1237.0,
+          342.0
+        ],
+        [
+          1387.0,
+          0.0,
+          1436.0,
+          316.0,
+          1452.0
+        ],
+        [
+          372.0,
+          1511.0,
+          0.0,
+          1260.0,
+          748.0
+        ],
+        [
+          1265.0,
+          524.0,
+          1306.0,
+          0.0,
+          1335.0
+        ],
+        [
+          488.0,
+          1290.0,
+          689.0,
+          1051.0,
+          0.0
+        ]
+      ]
+    },
+    {
+      "name": "evening_peak",
+      "label": "Evening Peak (6 PM)",
+      "hour": 18,
+      "departure_iso": "2026-05-04T18:00:00-04:00",
+      "nominal_multiplier": 1.6,
+      "multiplier": 1.5912,
+      "multiplier_per_pair_min": 1.339,
+      "multiplier_per_pair_max": 1.9775,
+      "distance_matrix": [
+        [
+          0.0,
+          1605.52,
+          346.88,
+          1320.7,
+          283.23
+        ],
+        [
+          1497.32,
+          0.0,
+          1516.41,
+          400.98,
+          1610.29
+        ],
+        [
+          461.45,
+          1635.75,
+          0.0,
+          1357.29,
+          811.51
+        ],
+        [
+          1342.97,
+          652.39,
+          1376.39,
+          0.0,
+          1352.52
+        ],
+        [
+          397.8,
+          1527.55,
+          606.25,
+          1099.52,
+          0.0
+        ]
+      ],
+      "duration_in_traffic_matrix": [
+        [
+          0.0,
+          1620.0,
+          384.0,
+          1444.0,
+          352.0
+        ],
+        [
+          1321.0,
+          0.0,
+          1332.0,
+          371.0,
+          1441.0
+        ],
+        [
+          414.0,
+          1650.0,
+          0.0,
+          1463.0,
+          774.0
+        ],
+        [
+          1214.0,
+          549.0,
+          1226.0,
+          0.0,
+          1357.0
+        ],
+        [
+          489.0,
+          1459.0,
+          707.0,
+          1143.0,
+          0.0
+        ]
+      ]
+    },
+    {
+      "name": "night",
+      "label": "Night (10 PM)",
+      "hour": 22,
+      "departure_iso": "2026-05-04T22:00:00-04:00",
+      "nominal_multiplier": 0.8,
+      "multiplier": 1.2971,
+      "multiplier_per_pair_min": 1.0913,
+      "multiplier_per_pair_max": 1.7528,
+      "distance_matrix": [
+        [
+          0.0,
+          1308.77,
+          282.77,
+          1076.59,
+          230.88
+        ],
+        [
+          1220.57,
+          0.0,
+          1236.14,
+          326.87,
+          1312.67
+        ],
+        [
+          376.16,
+          1333.42,
+          0.0,
+          1106.43,
+          661.52
+        ],
+        [
+          1094.75,
+          531.81,
+          1121.99,
+          0.0,
+          1102.53
+        ],
+        [
+          324.27,
+          1245.22,
+          494.2,
+          896.3,
+          0.0
+        ]
+      ],
+      "duration_in_traffic_matrix": [
+        [
+          0.0,
+          1220.0,
+          328.0,
+          1019.0,
+          312.0
+        ],
+        [
+          1124.0,
+          0.0,
+          1059.0,
+          275.0,
+          1158.0
+        ],
+        [
+          351.0,
+          1236.0,
+          0.0,
+          1011.0,
+          704.0
+        ],
+        [
+          1065.0,
+          503.0,
+          1027.0,
+          0.0,
+          1104.0
+        ],
+        [
+          431.0,
+          1111.0,
+          594.0,
+          907.0,
+          0.0
+        ]
+      ]
+    }
+  ],
+  "notes": "base_distance_matrix is the driving duration in seconds at 03:00 local Monday (off-peak reference) returned by the Google Maps Distance Matrix API. For each slot t, multiplier = mean over all O-D pairs of duration_in_traffic_t(i,j) / base(i,j). distance_matrix = round(base * multiplier, 2); duration_in_traffic_matrix carries the raw per-edge value at the queried departure_time."
+}
