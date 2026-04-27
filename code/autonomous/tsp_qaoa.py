@@ -1,8 +1,7 @@
 """
-QAOA TSP Solver using AWS Braket
-Solves TSP using Quantum Approximate Optimization Algorithm
-Supports SV1 simulator and Rigetti hardware
-Part of Universal Gurobi Controller - Quantum Benchmarking
+QAOA TSP Solver using AWS Braket.
+Solves TSP using the Quantum Approximate Optimization Algorithm.
+Supports the SV1 simulator and Rigetti hardware.
 """
 
 import os

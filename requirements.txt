@@ -1,40 +1,19 @@
-# Universal Gurobi Controller Dependencies
-# Install with: py -m pip install -r requirements.txt
+# Dependencies for the IEEE Quantum Week 2026 TD-TSP benchmark suite.
+# Install with: pip install -r requirements.txt
 
-# Core optimization
-gurobipy>=13.0.0
-pandas>=2.3.0
+# Core
 numpy>=1.24.0
-
-# Web UI
-streamlit>=1.51.0
-streamlit-folium>=0.15.0
-
-# TSP Route Optimizer
-folium>=0.15.0
-googlemaps>=4.10.0
-google-generativeai>=0.3.0
+pandas>=2.3.0
+scikit-learn>=1.3.0
 python-dotenv>=1.0.0
-
-# REST API
-fastapi>=0.115.0
-uvicorn>=0.32.0
-pydantic>=2.0.0
 requests>=2.31.0
 
-# Machine Learning (for Cluster-QAOA)
-scikit-learn>=1.3.0
+# Classical solver
+gurobipy>=13.0.0
 
-# ============================================
-# Quantum/Quantum-Inspired Solvers (Optional)
-# ============================================
-
-# D-Wave Ocean SDK (Hybrid CQM Solver)
+# Quantum annealing (D-Wave hybrid CQM)
 dwave-ocean-sdk>=6.0.0
 
-# AWS Braket (QAOA on SV1/Rigetti/IonQ)
+# Gate-based quantum (AWS Braket: SV1, Rigetti)
 amazon-braket-sdk>=1.50.0
 boto3>=1.28.0
-
-# Quanfluence (uses requests - already included above)
-

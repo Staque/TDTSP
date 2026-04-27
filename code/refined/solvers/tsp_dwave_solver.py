@@ -1,7 +1,7 @@
 """
-D-Wave TSP Solver
-Solves TSP using D-Wave's Hybrid CQM (Constrained Quadratic Model) Solver
-Part of Universal Gurobi Controller - Quantum Benchmarking
+D-Wave TSP Solver.
+Solves TSP using D-Wave's Hybrid CQM (Constrained Quadratic Model) Solver.
+Used as the per-cluster sub-solver by ClusterDWaveTSPSolver.
 """
 
 import os

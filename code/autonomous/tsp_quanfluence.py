@@ -1,12 +1,11 @@
 """
-Quanfluence Ising Machine TSP Solver
-Solves TSP using Quanfluence's quantum-inspired Ising Machine via REST API
-Part of Universal Gurobi Controller - Quantum Benchmarking
+Quanfluence Ising Machine TSP Solver.
+Solves TSP using Quanfluence's quantum-inspired Ising Machine via REST API.
 
 Features:
-- Parameter tuning for device optimization
-- Async job support for larger problems
-- Device query and configuration
+- Parameter tuning for device optimization.
+- Async job support for larger problems.
+- Device query and configuration.
 """
 
 import os

@@ -1,7 +1,6 @@
 """
-TSP (Traveling Salesman Problem) Solver
-Solves the Traveling Salesman Problem using Gurobi optimization
-Part of Universal Gurobi Controller
+TSP (Traveling Salesman Problem) Solver.
+Solves the Traveling Salesman Problem using Gurobi optimization.
 """
 
 import gurobipy as gp
@@ -274,15 +273,5 @@ def test_tsp_solver():
 
 
 if __name__ == "__main__":
-    # Run test when script is executed directly
-    success = test_tsp_solver()
-    
-    if success:
-        print("\n" + "="*70)
-        print("TSP SOLVER READY FOR STEP 3!")
-        print("="*70)
-        print("\nNext: Integrate with Google Maps API for real distances")
-        print("   Tell the assistant: 'Start Step 3'")
-    else:
-        print("\nPlease check the errors above")
+    test_tsp_solver()
 
