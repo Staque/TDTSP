@@ -21,7 +21,7 @@ instance's local timezone and computes per-stop depart/arrive clock times by
 walking the tour edges as durations in seconds. Distance matrices are taken
 from the **Google Maps Distance Matrix API** (`driving_duration_seconds`,
 `traffic_model=best_guess`) for **New York, NY**, anchored to Monday
-4 May 2026; the resulting per-slot *computed* multipliers are stamped into
+20 April 2026; the resulting per-slot *computed* multipliers are stamped into
 each instance JSON (see `data/instances/tdtsp_n*.json`).
 
 ## Repository layout
