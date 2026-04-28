@@ -20,7 +20,7 @@ Each benchmark runs a tour starting at the slot's representative hour in the
 instance's local timezone and computes per-stop depart/arrive clock times by
 walking the tour edges as durations in seconds. Distance matrices are taken
 from the **Google Maps Distance Matrix API** (`driving_duration_seconds`,
-`traffic_model=best_guess`) for **New York, NY**, anchored to Monday
+`traffic_model=best_guess`) for **New York City, NYC**, anchored to Monday
 20 April 2026; the resulting per-slot *computed* multipliers are stamped into
 each instance JSON (see `data/instances/tdtsp_n*.json`).
 
@@ -30,11 +30,11 @@ each instance JSON (see `data/instances/tdtsp_n*.json`).
 .
 ├── data/
 │   └── instances/
-│       ├── tdtsp_n5.json          # 5  cities,  New York
-│       ├── tdtsp_n10.json         # 10 cities,  New York
-│       ├── tdtsp_n25.json         # 25 cities,  New York
-│       ├── tdtsp_n50.json         # 50 cities,  New York
-│       └── tdtsp_n100.json        # 100 cities, New York
+│       ├── tdtsp_n5.json          # 5  nodes
+│       ├── tdtsp_n10.json         # 10 nodes
+│       ├── tdtsp_n25.json         # 25 nodes
+│       ├── tdtsp_n50.json         # 50 nodes
+│       └── tdtsp_n100.json        # 100 100 nodes
 ├── code/
 │   ├── autonomous/                # single-file TD-TSP solvers, no clustering
 │   │   ├── _tdtsp_common.py       # shared schedule/format helpers
@@ -77,15 +77,15 @@ The repository contains two distinct families of solvers:
 **`code/autonomous/`** — single-file TD-TSP solvers intended as the direct
 artefact of the SuperQ "Super" autonomous optimization platform. Each script
 accepts the slot-scaled distance matrix `D_t = m_t * D_base` and solves the
-n-city tour end-to-end on its backend with **no decomposition and no 2-opt
+n-node tour end-to-end on its backend with **no decomposition and no 2-opt
 post-processing** — a direct QUBO/MILP translation of the canonical TSP
 formulation. The autonomous solvers target small instances (n = 5).
 
 **`code/refined/`** — the human-refined cluster pipeline used to scale to 100
-cities. All four backends share the same decomposition strategy:
+nodes. All four backends share the same decomposition strategy:
 
 1. K-means on the instance's real lat/lng coordinates.
-2. Partition the cities into clusters sized to the backend's hardware limit.
+2. Partition the nodes into clusters sized to the backend's hardware limit.
 3. Solve each cluster's intra-cluster TSP on the target backend, using the
    slot-scaled distance matrix.
 4. Stitch the cluster tours together with a greedy nearest-neighbour
@@ -164,7 +164,7 @@ executed directly as `python code/autonomous/tdtsp_<backend>.py`.
 
 ## Result format
 
-Each benchmark writes a JSON keyed by city count `n`, with one entry per
+Each benchmark writes a JSON keyed by node count `n`, with one entry per
 time slot. A typical entry looks like:
 
 ```json
@@ -202,22 +202,19 @@ time slot. A typical entry looks like:
 ```bibtex
 @inproceedings{khan2026benchmarking,
   title     = {Benchmarking Quantum vs Classical Approaches for Time-Dependent TSP},
-  author    = {Khan, Muhammad Ali and Ganesh, Krishna and Hossain, Shahadat},
-  booktitle = {IEEE International Conference on Quantum Computing and Engineering (QCE)},
+  author    = {Ganesh, Krishna and Hossain, Shahadat and Khan, Muhammad Ali},
+  booktitle = {Preprint},
   year      = {2026},
-  organization = {IEEE}
+  organization = {SuperQ Quantum}
 }
 ```
 
 ## Authors
 
-- Muhammad Ali Khan, SuperQ Quantum Computing Inc., Calgary, Canada
 - Krishna Ganesh, SuperQ Quantum Computing Inc., Dubai, UAE
 - Shahadat Hossain, University of Northern British Columbia, Canada
+- Muhammad Ali Khan, SuperQ Quantum Computing Inc., Calgary, Canada
 
 ## Acknowledgements
 
-SuperQ Quantum Computing Inc. (Super autonomous optimization platform), AWS
-(Amazon Braket, Rigetti Cepheus-1-108Q access), D-Wave Systems (Leap),
-Quanfluence (Ising machine API), Google Maps Platform (Distance Matrix API),
-and Gurobi Optimization.
+SuperQ Quantum Computing Inc. and University of Northern British Columbia
