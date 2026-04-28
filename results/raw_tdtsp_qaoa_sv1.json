@@ -9,7 +9,7 @@
       "instance_meta": {
         "n": 5,
         "city": "New York",
-        "anchor_monday": "2026-05-04",
+        "anchor_monday": "2026-04-20",
         "locations": [
           "Times Square, New York, NY",
           "Wall Street, New York, NY",
@@ -2253,7 +2253,7 @@
       "instance_meta": {
         "n": 10,
         "city": "New York",
-        "anchor_monday": "2026-05-04",
+        "anchor_monday": "2026-04-20",
         "locations": [
           "Times Square, New York, NY",
           "Wall Street, New York, NY",
@@ -2486,7 +2486,7 @@
       "instance_meta": {
         "n": 25,
         "city": "New York",
-        "anchor_monday": "2026-05-04",
+        "anchor_monday": "2026-04-20",
         "locations": [
           "New York pt 001",
           "New York pt 002",
@@ -6064,7 +6064,7 @@
       "instance_meta": {
         "n": 50,
         "city": "New York",
-        "anchor_monday": "2026-05-04",
+        "anchor_monday": "2026-04-20",
         "locations": [
           "New York pt 001",
           "New York pt 002",
@@ -15170,7 +15170,7 @@
       "instance_meta": {
         "n": 100,
         "city": "New York",
-        "anchor_monday": "2026-05-04",
+        "anchor_monday": "2026-04-20",
         "locations": [
           "New York pt 001",
           "New York pt 002",

@@ -37,7 +37,7 @@ makhan@superq.co}
 \maketitle
 
 \begin{abstract}
-The Time-Dependent Traveling Salesperson Problem (TD-TSP) extends the classical TSP by incorporating temporal variability in edge costs, making it highly relevant for real-world applications such as logistics, traffic-aware routing, and dynamic supply chain optimization. This paper investigates potential quantum and quantum-inspired advantage for solving the NP-hard TD-TSP. We model and solve TD-TSP using (i) quantum annealing on D-Wave hybrid CQM solver, (ii) QAOA implementation on Rigetti quantum computer, (iii) Ising model on a Quanfluence Ising machine, and (iv) classical Gurobi MILP solver. The modelling and algorithm development takes place on the Super platform - an autonomous optimization engine developed by SuperQ Quantum that orchestrates workflows across a range of classical and quantum hardware. Super generates the initial code base. The authors refined the code through a series of experiments. Both the autonomously generated and human refined code is made available as well as a web app for visualization. The paper presents optimal values, solver times and communication overhead times from each approach. It also reviews the state of prior art to benchmark performance. 
+The Time-Dependent Traveling Salesperson Problem (TD-TSP) extends the classical TSP by incorporating temporal variability in edge costs, making it highly relevant for real-world applications such as logistics, traffic-aware routing, and dynamic supply chain optimization. This paper investigates potential quantum and quantum-inspired advantage for solving the NP-hard TD-TSP. We model and solve TD-TSP using (i) quantum annealing on D-Wave hybrid CQM solver, (ii) QAOA implementation on Rigetti quantum computer, (iii) Ising model on a Quanfluence Ising machine, and (iv) classical Gurobi MILP solver. The modelling and algorithm development takes place on the Super platform - an autonomous optimization engine developed by SuperQ Quantum that orchestrates workflows across a range of classical and quantum hardware. Super generates the initial code base. The authors refined the code through a series of experiments. Both the autonomously generated and human refined code is made available. The paper presents optimal values, solver times and communication overhead times from each approach. It also reviews the state of prior art to benchmark performance. 
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -46,22 +46,22 @@ TSP, Quantum Annealing, QAOA, Ising Model, QUBO, MILP
 
 \section{Introduction}
 
-The Traveling Salesperson Problem (TSP) is one of the most widely studied combinatorial optimization problems. In its classical form, the problem seeks a minimum-cost Hamiltonian tour through a set of cities where associated with each edge is a non-negative real number representing some ``cost''. The TSP is NP-hard and becomes computationally challenging even at moderate scales. At the same time, in many practical routing and logistics applications the cost associated is ``dynamic''. In realistic transportation systems, travel times and route costs often vary with the time of traversal due to congestion, peak-hour effects, incidents, or changing conditions.
+The Traveling Salesperson Problem (TSP) is one of the most widely studied combinatorial optimization problems. The problem seeks a minimum-cost Hamiltonian tour of a graph where each edge is associated with a non-negative real number representing some ``cost''. The TSP is NP-hard and becomes computationally challenging even at moderate scales. 
 
-The Time-Dependent Traveling Salesperson Problem (TD-TSP) extends the classical TSP by allowing edge costs to depend on time. This extension makes the model more relevant for traffic-aware routing, logistics planning,  and dynamic supply chain operations. However, the added constraints come at a significant computational price. Time dependence introduces an additional temporal dimension into an already difficult combinatorial optimization problem, and complicating both modelling and algorithm design. As a result, TD-TSP serves as a useful testbed for assessing whether emerging computational paradigms can offer practical benefit beyond conventional optimization technology.
+The Time-Dependent Traveling Salesperson Problem (TD-TSP) extends the classical TSP by allowing edge costs to depend on time. This extension makes the model more relevant for traffic-aware routing, logistics planning,  and dynamic supply chain operations. However, the added constraints come at a significant modelling and computational overhead. Therefore, TD-TSP serves as a useful testbed for assessing whether emerging computational paradigms can offer practical benefit beyond conventional optimization technology.
 
 Quantum computing and quantum-inspired optimization have recently garnered increasing interest as promising approaches for treating challenging combinatorial problems. Approaches such as quantum annealing and quantum approximate optimization algorithm (QAOA) aim to exploit quantum phenomenon to search complex energy landscapes, while quantum-inspired Ising machines seek similar advantages simulating statistical mechanics on specialized classical hardware. While these approaches have demonstrated promise on certain optimization problems, their practical advantage remains largely unexplored--particularly for structured problems with complex constraints such as TD-TSP. 
 
 In this paper, we investigate the potential quantum and quantum-inspired advantage for solving TD-TSP by conducting a comparative computational study across four paradigms: quantum annealing using the D-Wave hybrid CQM solver, QAOA implementation on a Rigetti quantum computer, Ising model implementation on a quantum-inspired Ising machine by Quanfluence, and a classical mixed-integer linear programming (MILP) baseline using Gurobi. The modeling and algorithm-development workflow is carried out on Super\textsuperscript{TM}, an autonomous optimization engine developed by SuperQ Quantum that orchestrates optimization workflows across a range of classical and quantum hardware platforms. Super is used to model TD-TSP and generate the initial code base, which is then refined by the authors through a series of computational experiments. To support transparency and reuse, both the autonomously generated code and the human-refined implementations is made available.
 
-The contributions of this paper are threefold. First, we provide a unified experimental framework for implementing TD-TSP across classical, quantum, and quantum-inspired solvers. Second, we report and compare solution quality, solver runtimes, and communication overhead times in order to assess practical performance rather than relying on objective values alone. Third, we emphasize reproducibility by providing the code base and a web application for visualization. This study aims to provide a careful and transparent assessment of the current capabilities of quantum and quantum-inspired optimization technologies for a practical routing problem.
+The contributions of this paper are threefold. First, we provide a unified experimental framework for implementing TD-TSP across classical, quantum, and quantum-inspired solvers. Second, we report and compare solution quality, solver runtimes, and communication overhead times in order to assess practical performance rather than relying on objective values alone. Third, we emphasize reproducibility by providing the code base, input data, and raw and processed outputs. This study aims to provide a careful and transparent assessment of the current capabilities of quantum and quantum-inspired optimization technologies for a practical routing problem.
 %[Introduction placeholder text to be written.]
 
 %\section{Literature Review}
 %\section{Related Work}
 \section{Related Work}
 
-The time-dependent traveling salesperson problem (TD-TSP) makes the travel time along an edge dependent on the departure time. In transportation settings, this time dependence is typically induced by \emph{time-of-day traffic patterns}, such as peak-hour congestion, which make the cost of traversing the same road segment vary over the planning horizon. A foundational transportation-oriented model was introduced in the broader setting of time-dependent vehicle routing by Malandraki and Daskin~\cite{MalandrakiDaskin1992}, where travel times explicitly depend on time of day. Building on this perspective, Malandraki and Dial~\cite{MalandrakiDial1996} developed a restricted dynamic programming heuristic for the TD-TSP, showing how congestion-sensitive travel times significantly complicate route optimization relative to the static TSP. Subsequent work strengthened exact methods and richer variants, including branch-and-cut algorithms~\cite{CordeauGhianiGuerriero2014}, dynamic discretization for time windows~\cite{VuHewittBolandSavelsbergh2020}, and dynamic programming approaches for the time-dependent TSP with time windows~\cite{LeraRomeroMirandaBrontSoulignac2022}. For a broader overview of time-dependent routing, see~\cite{GendreauGhianiGuerriero2015}.
+A foundational transportation-oriented model was introduced in the broader setting of time-dependent vehicle routing by Malandraki and Daskin~\cite{MalandrakiDaskin1992}, where travel times explicitly depend on time of day. Building on this perspective, Malandraki and Dial~\cite{MalandrakiDial1996} developed a restricted dynamic programming heuristic for the TD-TSP, showing how congestion-sensitive travel times significantly complicate route optimization relative to the static TSP. Subsequent work strengthened exact methods and richer variants, including branch-and-cut algorithms~\cite{CordeauGhianiGuerriero2014}, dynamic discretization for time windows~\cite{VuHewittBolandSavelsbergh2020}, and dynamic programming approaches for the time-dependent TSP with time windows~\cite{LeraRomeroMirandaBrontSoulignac2022}. For a broader overview of time-dependent routing, see~\cite{GendreauGhianiGuerriero2015}.
 
 The quantum and hybrid quantum--classical routing literature has so far focused more on the classical TSP, the capacitated vehicle routing problem (CVRP), and time-window variants than on the TD-TSP with explicitly departure-time-dependent edge costs. Early hybrid work by Feld \emph{et al.}~\cite{Feld2019} combined classical decomposition with quantum annealing for the CVRP, showing that partitioning larger routing instances into smaller QUBO subproblems is a practical way to work within current hardware limits. Borowski \emph{et al.}~\cite{Borowski2020} extended this direction with additional hybrid quantum annealing algorithms for VRP and CVRP, while Harwood \emph{et al.}~\cite{Harwood2021} studied how routing problems can be formulated and decomposed for quantum optimization. For temporally constrained routing variants, Irie \emph{et al.}~\cite{Irie2019} proposed a QUBO model for vehicle routing with time, state, and capacity, while Papalitsas \emph{et al.}~\cite{Papalitsas2019} and Salehi \emph{et al.}~\cite{Salehi2022} developed unconstrained binary formulations for the traveling salesperson problem with time windows and related TSP variants. More recently, Holliday \emph{et al.}~\cite{Holliday2025} embedded quantum annealing inside a classical tabu search framework for the CVRP, using the quantum component to solve route-level TSP subproblems.
 
@@ -69,7 +69,7 @@ Alongside these hybrid methods, the current literature also reports more direct 
 %Baldazzi \emph{et al.}~\cite{Baldazzi2025} introduced a resource-efficient variational solver and demonstrated a four-city proof of concept on a silicon photonic platform. 
 Madhu \emph{et al.}~\cite{Madhu2025} developed edge-based and subspace-reduction encodings for TSP and reported experiments on simulators and real quantum hardware for small instances. Stasik and Fuchs~\cite{Stasik2026} proposed a compact route-register encoding with oracle-based validity and cost evaluation, reducing qubit requirements while still observing that the overall complexity remains exponential. Collectively, these studies show steady progress in encoding efficiency and proof-of-concept implementations, but they remain largely limited to small instances.
 
-Prior work shows that quantum and quantum-inspired routing approaches have advanced for TSP-like subproblems, CVRP, and time-window variants, while TD-TSP under time-of-day traffic-dependent edge costs remains relatively unexplored. The present study addresses this gap.
+Prior work shows that quantum and quantum-inspired routing approaches have progressed for TSP and CVRP, while TD-TSP remains relatively unexplored. The present study addresses this gap.
 % TODO: Write literature review content
 % - Prior work on classical TSP algorithms
 % - Time-Dependent TSP formulations and solutions
@@ -84,26 +84,29 @@ Prior work shows that quantum and quantum-inspired routing approaches have advan
 \section{Methodology}
 This section describes the problem formulation, experimental setup and computational platforms employed in our benchmarking study.
 
+To facilitate independent verification of our results, all inputs, source code, benchmark scripts, and result data are publicly available at: \texttt{https://github.com/Staque/TDTSP}
+
+
 \subsection{Algorithm Development Process}
 The initial algorithmic framework for this study was generated using Super, an autonomous optimization engine developed by SuperQ Quantum Computing. Super is designed to orchestrate optimization workflows across heterogeneous computing infrastructure, including classical solvers, quantum annealers, gate-based quantum processors, and quantum-inspired hardware. Given a high-level problem specification, Super automatically generates baseline solver implementations tailored to each target platform.
 
-For this study, Super produced initial implementations for TD-TSP targeting four distinct computational backends: Gurobi MILP solver, D-Wave quantum annealer, QAOA on gate-based quantum hardware, and the Quanfluence Ising machine. The authors subsequently refined these implementations through extensive experimentation, incorporating problem-specific optimizations such as cluster-based decomposition strategies and local search post-processing. Both the autonomously generated baseline code and the human-refined implementations are made publicly available.
+For this study, Super produced initial implementations for TD-TSP targeting four distinct computational backends: Gurobi MILP solver, D-Wave quantum annealer, QAOA on gate-based quantum hardware, and the Quanfluence Ising machine. The authors subsequently refined these implementations through extensive experimentation, incorporating problem-specific optimizations such as cluster-based decomposition strategies and local search post-processing. The autonomously generated, single-block solver translations used for the $n=5$ reference experiments live in \texttt{code/autonomous/tdtsp\_\{gurobi, dwave, qaoa, quanfluence\}.py}; the human-refined K-means cluster decomposition + asymmetry-aware 2-opt pipeline used for every $n \ge 10$ result lives in \texttt{code/refined/solvers/tdtsp\_cluster\_\{gurobi, dwave, qaoa, quanfluence\}.py}, with the corresponding benchmark drivers under \texttt{code/refined/benchmarks/}. 
 
 
 \subsection{Problem Instance Generation}
 
-To anchor our benchmarks in realistic urban traffic dynamics rather than synthetic geometry, all TD-TSP instances are built from the \textbf{Google Maps Distance Matrix API} for \textbf{New York, NY}, queried for departures on \textbf{Monday, 4 May 2026}. For each problem size $n \in \{5, 10, 25, 50, 100\}$, we select $n$ well-known Manhattan landmarks (Times Square, Wall Street, Central Park, Brooklyn Bridge, Penn Station, \ldots), geocode them through the Google Places API to obtain latitude/longitude coordinates, and record both the place names and coordinates in the instance JSON.
+All TD-TSP instances in this paper are built from the \emph{Google Maps Distance Matrix API} for \emph{New York City}, queried for departures on Monday, 20th April 2026. The small instances ($n \in \{5, 10\}$) use well-known Manhattan landmarks (Times Square, Wall Street, Central Park, Brooklyn Bridge, Penn Station, \ldots), which we first resolve through the Google Places API to obtain latitude/longitude coordinates. The larger instances ($n \in \{25, 50, 100\}$) use 100 points uniformly sampled (seed 42) inside a Manhattan bounding box and then snapped to road-network addresses through the same Places API; the $n=25$ and $n=50$ instances are prefixes of this same 100-point draw, so every larger set strictly contains the smaller ones. In both regimes the instance JSON records the resolved addresses and coordinates alongside the distance matrices.
 
-The base distance matrix $D$ is the \textbf{driving-duration-in-traffic} matrix returned by the API at \textbf{03:00 local time}, used as the off-peak free-flow reference, with entries in \textbf{seconds}. Because it is fetched from a real road network with one-way streets and asymmetric routing, $D$ is in general \emph{asymmetric} ($D_{ij} \ne D_{ji}$) and is not guaranteed to satisfy the triangle inequality. This places our instances outside the classical \emph{metric} TSP regime and exercises each solver's ability to handle realistic, asymmetric travel costs.
+The base distance matrix $D$ is the \emph{driving-duration-in-traffic} matrix returned by the API at 03:00 local time, used as the off-peak free-flow reference, with entries in seconds. Because it is fetched from a real road network with one-way streets and asymmetric routing, $D$ is in general \emph{asymmetric} ($D_{ij} \ne D_{ji}$) and is not guaranteed to satisfy the triangle inequality. This places our instances outside the classical \emph{metric} TSP regime and exercises each solver's ability to handle realistic, asymmetric travel costs.
 
-For Time-Dependent TSP we evaluate four departure time slots, each queried independently from the API with \texttt{traffic\_model = best\_guess}:
+For Time-Dependent TSP we evaluate four departure time slots, each queried independently from the API with \texttt{traffic\_model = best\_guess}.
 
 \begin{table}[htbp]
-\caption{Time slots and traffic multipliers}
+\caption{Time-based traffic multipliers for NYC}
 \begin{center}
 \begin{tabular}{|l|c|c|c|}
 \hline
-\textbf{Slot} & \textbf{Departure} & \textbf{Nominal $\tau(t)$} & \textbf{Computed $m_t$ (NYC, $n{=}5$)} \\
+\textbf{Time} & \textbf{Departure} & \textbf{Nominal $\tau(t)$} & \textbf{Computed $m_t$ ($n{=}5$)} \\
 \hline
 Morning Peak & 08:00 & 1.5 & 1.5183 \\
 \hline
@@ -126,7 +129,7 @@ m_t \;=\; \frac{1}{|\mathcal{P}|}\!\!\sum_{(i,j) \in \mathcal{P}}
 \frac{\tau_t(i,j)}{D_{ij}},
 \label{eq:td_distance}
 \end{equation}
-where $\mathcal{P} = \{(i,j) : i \ne j\}$ and $m_t$ is the empirical mean ratio of in-traffic duration to free-flow duration over all ordered O\textendash D pairs. The nominal $\tau(t)$ values in Table~\ref{tab:slots} are the canonical TD-TSP multipliers commonly used in the literature and are reported alongside the computed $m_t$ to characterise each city; only the computed $m_t$ is consumed by the solvers, ensuring that performance numbers reflect actual NYC traffic dynamics rather than hand-tuned constants. Both \texttt{base\_distance\_matrix} and the per-slot \texttt{distance\_matrix} = $D \cdot m_t$, together with the raw \texttt{duration\_in\_traffic\_matrix} $\tau_t$, are persisted in the instance JSON for full reproducibility.
+where $\mathcal{P} = \{(i,j) : i \ne j\}$ and $m_t$ is the empirical mean ratio of in-traffic duration to free-flow duration over all ordered node-pairs. The nominal $\tau(t)$ values in Table~\ref{tab:slots} are the canonical TD-TSP multipliers commonly used in the literature and are reported alongside the computed $m_t$. Only the computed $m_t$ is consumed by the solvers, ensuring that the inputs reflect actual NYC traffic dynamics. 
 
 \subsection{Computational Platforms}
 %The computational experiments were conducted using the Super platform, Gurobi Optimizer under an academic license, Rigetti Cepheus-1-108Q quantum processor accessed through AWS Braket, and the Quanfluence Ising Machine API.
@@ -138,10 +141,10 @@ Super platform enables orchestration across all of the solvers below through a w
 We employ Gurobi Optimizer (version 13.0) with the Miller-Tucker-Zemlin (MTZ) formulation for subtour elimination. The solver runs on a workstation with an Intel Core i7 processor and 32GB RAM, using a Web License Server (WLS) configuration.
 
 \subsubsection{Quantum Annealer}
-The D-Wave Advantage system has over 5,000 annealing qubits with Pegasus topology connectivity. Leap hybrid Constrained Quadratic Model (CQM) solver is accessed via the Ocean SDK (version 6.x). This hybrid approach combines quantum annealing with classical pre- and post-processing. 
+The D-Wave Advantage system has 5,000 annealing qubits with Pegasus topology connectivity. We used Leap hybrid Constrained Quadratic Model (CQM) solver accessed via the Ocean SDK (version 6.x). This hybrid approach combines quantum annealing with classical pre- and post-processing. 
 
 \subsubsection{Gate-Based Quantum Computing}
-QAOA circuits are executed on AWS Braket using both the SV1 state vector simulator and the Rigetti Cepheus-1-108Q superconducting quantum processor (108 qubits, located in us-west-1 region). Due to Rigetti's per-task 20{,}000 native-gate budget, we employ a cluster-based decomposition strategy with maximum cluster sizes of 5 cities (25 qubits) per QAOA sub-problem on both backends.
+QAOA circuits are executed on AWS Braket using both the SV1 state vector simulator and the Rigetti Cepheus-1-108Q superconducting quantum processor (108 qubits, located in us-west-1 region). Due to Rigetti's per-task 20{,}000 native-gate budget, we employ a cluster-based decomposition strategy with maximum cluster sizes of 5 nodes (25 qubits) per QAOA sub-problem on both backends.
 
 \subsubsection{Ising Machine}
 The Quanfluence Ising machine is accessed via REST API. This quantum-inspired digital computing platform solves QUBO formulations through coherent Ising model dynamics.
@@ -159,7 +162,7 @@ Super & Orchestrator & All the below & Web and API \\
 \hline
 Gurobi 13.0 & Classical MILP & -- & Local WLS \\
 \hline
-D-Wave Leap & Quantum Annealer & 5000+ & Cloud API \\
+D-Wave Leap & Quantum Annealer & 5000 & Cloud API \\
 \hline
 Rigetti Cepheus & Gate-based QPU & 108 & AWS Braket \\
 \hline
@@ -174,7 +177,7 @@ Quanfluence & Ising Machine & 1000+ & REST API \\
 
 \subsection{QUBO Formulation}
 
-For quantum annealer and Ising solver, the TSP is encoded as a Quadratic Unconstrained Binary Optimization (QUBO) problem. We introduce $n^2$ binary decision variables $x_{i,t} \in \{0,1\}$, where $x_{i,t} = 1$ indicates that city $i$ is visited at time $t$ during the tour.
+For quantum annealer and Ising solver, the TSP is encoded as a Quadratic Unconstrained Binary Optimization (QUBO) problem. We introduce $n^2$ binary decision variables $x_{i,t} \in \{0,1\}$, where $x_{i,t} = 1$ indicates that node $i$ is visited at time $t$ during the tour.
 
 The objective function minimizes the total tour distance:
 \begin{equation}
@@ -219,7 +222,7 @@ QAOA layers ($p$) & 2 & 1 \\
 \hline
 Shots per circuit & 500 & 500 \\
 \hline
-Max cluster size & 5 cities & 5 cities \\
+Max cluster size & 5 nodes & 5 nodes \\
 \hline
 Max qubits/cluster & 25 & 25 \\
 \hline
@@ -230,59 +233,53 @@ Est.\ native gates/cluster & $\sim$10{,}600 & $\sim$10{,}600 \\
 \end{center}
 \end{table}
 
-The native-gate count of the transpiled QAOA circuit scales approximately as $O(n^4 \cdot p)$ for an $n$-city TSP QUBO due to the dense all-to-all couplings of the cost Hamiltonian. Rigetti Cepheus-1-108Q enforces a hard \textbf{20{,}000-gate} budget per task on AWS Braket. Empirically, the 5-city ($n=5$, 25-qubit) QAOA TSP circuit transpiles to $\approx 10{,}600$ native gates at $p=1$ and $\approx 21{,}200$ gates at $p=2$ -- the latter just over the budget. We therefore run \textbf{$p=1$} on Rigetti at the largest cluster size that fits (5 cities, the same as SV1) and reserve $p=2$ for the SV1 simulator, where it is unconstrained by gate-count limits. Both backends use 500 shots per circuit so that shot-noise statistics are directly comparable between simulator and QPU.
+The native-gate count of the transpiled QAOA circuit scales approximately as $O(n^4 \cdot p)$ for an $n$-node TSP QUBO due to the dense all-to-all couplings of the cost Hamiltonian. Rigetti Cepheus-1-108Q enforces a hard 20{,}000-gate budget per task on AWS Braket. Empirically, the 5-node ($n=5$, 25-qubit) QAOA TSP circuit transpiles to $\approx 10{,}600$ native gates at $p=1$ and $\approx 21{,}200$ gates at $p=2$ -- the latter just over the budget. We therefore run $p=1$ on Rigetti at the largest cluster size that fits (5 nodes) and reserve $p=2$ for the SV1 simulator. Both backends use 500 shots per circuit.
 
 \subsection{Cluster-Based Decomposition} \label{2-opt}
 
-To address scalability limitations inherent in current quantum hardware, we implement a hierarchical clustering approach uniformly across all quantum and quantum-inspired solvers:
+To address scalability limitations inherent in current quantum hardware, we implement a hierarchical clustering approach uniformly across all solvers:
 
 \begin{enumerate}
-\item \textbf{Coordinate Estimation}: For problems specified only by distance matrices, we employ Multidimensional Scaling (MDS) to recover approximate 2D city coordinates.
-\item \textbf{K-Means Clustering}: Cities are partitioned into clusters using K-means, with cluster sizes bounded by hardware-specific limits (5 cities for QAOA on both SV1 and Rigetti, 10 for Quanfluence, 15 for D-Wave and Gurobi).
-\item \textbf{Sub-Problem Solution}: Each cluster's internal TSP is solved independently using the respective quantum or classical solver.
+\item \textbf{K-Means Clustering}: Nodes are partitioned into clusters using K-means, with cluster sizes bounded by hardware-specific limits (5 for QAOA, 10 for Ising machine, 15 for annealer and Gurobi).
+\item \textbf{Sub-Problem Solution}: Each cluster's internal TD-TSP is solved independently.
 \item \textbf{Tour Stitching}: Cluster tours are connected via a greedy nearest-neighbor heuristic based on cluster centroids.
 \item \textbf{Local Search Refinement}: An asymmetry-aware 2-opt local search refines the stitched solution. The empirical improvement ranges from $\approx$3\% (D-Wave, whose Hybrid CQM sampler already returns near-optimal raw tours) to $\approx$30\% (Quanfluence, where the raw QUBO solution carries the most stitching slack); see Table~\ref{tab:two_opt}.
 \end{enumerate}
 
-This decomposition enables scaling to 100+ city instances while maintaining the quantum advantage exploration within tractable sub-problems.
+This decomposition enables scaling to 100+ node instances while maintaining the quantum advantage exploration within tractable sub-problems.
 
 \subsection{Evaluation Metrics}
 
 We evaluate solver performance using the following metrics:
 \begin{itemize}
-\item \textbf{Total Tour Distance}: The primary objective value representing the sum of edge costs in the solution tour.
-\item \textbf{Solve Time}: Wall-clock time from problem submission to solution retrieval, including any queue delays for cloud-based quantum resources.
-\item \textbf{Raw vs. Refined Distance}: For quantum solvers, we report both the initial solution quality and the post-2-opt refined distance.
+\item \textbf{Total Tour Time}
+\item \textbf{Solve Time}: Wall-clock time from problem submission to solution retrieval.
+\item \textbf{Raw vs. Refined Time}: For quantum solvers, we report both the initial solution and the post-2-opt refined value.
 \item \textbf{Cluster Count}: The number of sub-problems created by the decomposition strategy.
-\item \textbf{Approximation Ratio}: Defined as $r = C_{\text{solver}} / C_{\text{optimal}}$, where $C_{\text{optimal}}$ is the best known solution (typically from Gurobi). A ratio of 1.0 indicates optimal solution quality.
-\item \textbf{2-opt Improvement}: The percentage reduction in tour distance achieved by local search refinement, calculated as $(C_{\text{raw}} - C_{\text{refined}}) / C_{\text{raw}} \times 100\%$.
+\item \textbf{Approximation Ratio}: Defined as $r = C_{\text{solver}} / C_{\text{ref}}$. For $n \le 50$, $C_{\text{ref}}$ is the \emph{single-cluster} Gurobi MILP optimum (i.e.\ Gurobi solving the entire instance in one shot, with no K-means decomposition) which is the true global optimum, so $r \ge 1$ with $r = 1.0$ indicating optimal quality. For $n = 100$ the single-cluster MILP does not terminate within our 1-hour budget, so $C_{\text{ref}}$ falls back to the cluster-Gurobi cost from Table~\ref{tab:results_quality}; at this size values $r < 1.0$ mean the solver beats the best available classical clustering baseline. The exact reference numbers are reported in Section~\ref{sec:approx_ratio}.
+\item \textbf{2-opt Improvement}: The percentage reduction in tour time achieved by local search refinement, calculated as $(C_{\text{raw}} - C_{\text{refined}}) / C_{\text{raw}} \times 100\%$.
 \end{itemize}
 
-All experiments were conducted as single runs against the frozen Google-Maps-derived TD-TSP instance JSONs in \texttt{data/instances/}, so problem generation is fully deterministic and reproducible without re-querying the Maps API. For quantum hardware experiments, variability due to shot noise and hardware fluctuations is inherent; we report raw measurement outcomes without statistical averaging across multiple submissions.
-
-\subsection{Reproducibility and Code Availability}
-
-To facilitate independent verification of our results, all source code, benchmark scripts, and result data are publicly available at: \texttt{https://github.com/Staque/TDTSP}
-
-Additionally, a web application is provided for visualization of results at: \texttt{https://TDTSP.superq.co}.
+All experiments were conducted against the frozen TD-TSP instance JSONs in \texttt{TDTSP/data/instances/} folder, so problem generation is fully deterministic and reproducible without re-querying the Maps API. 
+%For quantum hardware experiments, variability due to shot noise and hardware fluctuations is inherent; we report raw measurement outcomes without statistical averaging across multiple submissions.
 
 \section{Results}
 
-We benchmark five solvers---Gurobi, D-Wave LeapHybridCQM, Quanfluence (Ising machine), QAOA on the AWS Braket SV1 simulator, and QAOA on the Rigetti Cepheus-1-108Q QPU---on TD-TSP instances generated from a real Google Maps Distance Matrix over $n \in \{5, 10, 25, 50, 100\}$ New York City landmarks. Each instance is solved at four representative departure times: Morning Peak (08:00), Midday (12:00), Evening Peak (18:00), and Night (22:00). The travel-time multipliers used to scale the off-peak baseline matrix are reported in Table~\ref{tab:slot_params} and are stored alongside every instance JSON.
+We benchmark five solvers were tested over $n \in \{5, 10, 25, 50, 100\}$ New York City addresses. Each instance is solved at four representative departure times: Morning Peak (08:00), Midday (12:00), Evening Peak (18:00), and Night (22:00). Each slot enters the pipeline in two complementary ways: (i) it selects the empirical multiplier $m_t$ (Table~\ref{tab:slot_params}) that scales the 03:00 free-flow baseline matrix into the cost matrix $D^{(t)}$ actually consumed by every solver, and (ii) it sets the wall-clock departure time of the recovered tour, so the per-stop schedule stored in each result JSON runs from 08:00, 12:00, 18:00, or 22:00 local on Monday, 20th April 2026 and carries through each edge traversal in seconds.
 
-This results section reports two distinct code paths. The \textit{autonomous} solvers are the direct, single-block translations produced by Super (direct QUBO for D-Wave, QAOA, and Quanfluence; an MILP/MTZ formulation for Gurobi). They are intended only for the small-instance regime---in our benchmarks, $n=5$, where one cluster suffices and direct translation is tractable on every backend. The \textit{refined} solvers wrap that same Super-generated translation in a K-means cluster decomposition followed by an asymmetry-aware 2-opt local search, and are used for $n \geq 10$, where direct translation is not feasible (qubit, gate, or annealer-size budgets) and clustering becomes mandatory. All numbers below come from the refined cluster pipeline unless explicitly noted.
+Super platform autonomously produces the direct, single-block problem translations and code for the solvers for $n=5$. We then refined by wrapping this in a K-means cluster decomposition followed by an asymmetry-aware 2-opt local search to scale for $n \geq 10$. All the reported results below come from the refined clustered pipeline unless otherwise noted.
 
 \subsection{Time-Slot Parameters}
 \label{subsec:slot_params}
 
-Table~\ref{tab:slot_params} lists the four time slots, the wall-clock departure time used for each, the nominal target multiplier, and the empirical multiplier extracted from Google Maps for the $n=100$ Manhattan instance. Following equation~\eqref{eq:td_distance}, the empirical column is the mean over all O\textendash D pairs $(i,j)$ of $\tau_t(i,j) / D_{ij}$, where $D$ is the 03:00 free-flow baseline matrix and $\tau_t$ is the in-traffic duration matrix at the slot's departure time. This is the value actually used to scale the cost matrix presented to every solver.
+Table~\ref{tab:slot_params} lists the four time slots, the wall-clock departure time used for each, the nominal target multiplier, and the empirical multiplier extracted from Google Maps for the $n=100$  instance. Following equation~\eqref{eq:td_distance}, the empirical column is the mean over all node pairs $(i,j)$ of $\tau_t(i,j) / D_{ij}$, where $D$ is the 03:00 free-flow baseline matrix and $\tau_t$ is the in-traffic duration matrix at the slot's departure time. This is the value actually used to scale the cost matrix presented to every solver. The computed multipliers are available in \texttt{TDTSP/data/instances/tdtsp\_n*.json} under the \texttt{multipliers} key.
 
 \begin{table}[htbp]
-\caption{Time-Slot Parameters for the $n{=}100$ NYC Instance (per-instance values are stored in each \texttt{tdtsp\_n*.json})}
+\caption{Time-Slot Parameters for the $n{=}100$ Instance}
 \begin{center}
 \begin{tabular}{|l|c|c|c|}
 \hline
-\textbf{Slot} & \textbf{Departure} & \textbf{Nominal $m_t$} & \textbf{Computed $m_t$ (NY, $n{=}100$)} \\
+\textbf{Slot} & \textbf{Departure} & \textbf{Nominal $m_t$} & \textbf{Computed $m_t$ ($n{=}100$)} \\
 \hline
 Morning Peak  & 08:00 & 1.5 & 1.660 \\
 \hline
@@ -297,11 +294,44 @@ Night         & 22:00 & 0.8 & 1.095 \\
 \end{center}
 \end{table}
 
-The nominal multipliers are the design targets from the Methodology section; the computed multipliers are baked into \texttt{data/instances/tdtsp\_n*.json} under the \texttt{multipliers} key, so that any reader can reproduce the exact slot-specific cost matrices without re-querying the Google Maps API.
+
+
+\subsection{Example Recovered Tour}
+\label{subsec:example_tour}
+
+To make concrete what every solver produces alongside the scalar tour cost, Table~\ref{tab:schedule_example} shows the full per-stop schedule recovered by Gurobi for the $n=5$ Morning Peak instance (departure 08:00 on Monday, 20th April 2026). The same schedule structure is stored under the \texttt{schedule} key in every \texttt{results/results\_tdtsp\_*.json} run entry.
+
+\begin{table}[htbp]
+\caption{Example Schedule: $n=5$ Morning Peak (Gurobi, $m_t{=}1.5183$)}
+\begin{center}
+\begin{tabular}{|c|l|c|c|c|}
+\hline
+\textbf{Step} & \textbf{From $\rightarrow$ To} & \textbf{Depart} & \textbf{Arrive} & \textbf{Edge} \\
+\hline
+1 & Times Sq.\ $\rightarrow$ Penn Stn.\    & 08:00:00 & 08:04:30 & 4m 30s  \\
+\hline
+2 & Penn Stn.\ $\rightarrow$ Brooklyn Br.\ & 08:04:30 & 08:21:59 & 17m 29s \\
+\hline
+3 & Brooklyn Br.\ $\rightarrow$ Wall St.\  & 08:21:59 & 08:32:22 & 10m 22s \\
+\hline
+4 & Wall St.\ $\rightarrow$ Central Pk.\   & 08:32:22 & 08:56:29 & 24m 07s \\
+\hline
+5 & Central Pk.\ $\rightarrow$ Times Sq.\  & 08:56:29 & 09:03:49 & 7m 20s  \\
+\hline
+\end{tabular}
+\label{tab:schedule_example}
+\end{center}
+\end{table}
+
+The tour returns to its origin after a total of 1h 03m 49s of in-traffic driving time, matching the 3829\,s entry in Table~\ref{tab:results_quality}. The same tour is recovered by D-Wave, Quanfluence, and Rigetti-QAOA at this slot; SV1 finds a 3864\,s variant (Table~\ref{tab:results_quality}).
 
 \subsection{Solution Quality Comparison}
 
-Table~\ref{tab:results_quality} reports the final tour cost---the sum of slot-specific travel times in seconds---achieved by each solver across all five problem sizes and all four time slots. Bold values indicate the best (lowest) cost for each (slot, $n$) cell. All entries are produced by the refined cluster $+$ 2-opt pipeline. At $n=5$ the pipeline collapses to a \emph{single} cluster on every backend (since $5 \le$ each backend's max cluster size), so the cluster path at $n=5$ is mathematically identical to the autonomous, direct Super-generated translation; the autonomous Gurobi MILP run separately on \texttt{n=\{5,10,25,50\}} (file \texttt{results\_tdtsp\_gurobi\_autonomous.json}) reproduces the same costs, anchoring correctness across the two code paths.
+Table~\ref{tab:results_quality} reports the minimum tour cost achieved by each solver across all five problem sizes and all four departure times. Bold values indicate the best (lowest) cost for each (slot, $n$) cell. 
+
+%All entries are produced by the refined clustered $+$ 2-opt pipeline. 
+
+%At $n=5$ the pipeline collapses to a \emph{single} cluster on every backend (since $5 \le$ each backend's max cluster size), so the cluster path at $n=5$ is mathematically identical to the autonomous, direct Super-generated translation; the autonomous Gurobi MILP run separately on \texttt{n=\{5,10,25,50\}} (file \texttt{results\_tdtsp\_gurobi\_autonomous.json}) reproduces the same costs, anchoring correctness across the two code paths.
 
 \begin{table}[htbp]
 \caption{Solution Quality: Final Tour Cost (seconds) Across Time Slots}
@@ -339,25 +369,26 @@ Night        & 5   & \textbf{3271}  & \textbf{3271}  & \textbf{3271}  & \textbf{
 \end{center}
 \end{table}
 
-Key observations from the solution quality analysis:
+The following are key observations from the solution quality analysis:
 
 \begin{itemize}
-\item \textbf{Slot-dependence is real and large}. At $n=100$, the Gurobi cost moves from 37\,126\,s at Night to 56\,269\,s at Morning Peak---a 51\% increase driven entirely by the time-of-departure multiplier. This validates that the multipliers stored in each instance JSON propagate cleanly through every solver.
-\item \textbf{Small instances ($n=5,10$)}: every backend---autonomous at $n=5$ and refined at $n=10$---returns the same optimal cost in every slot. This anchors the comparison: the autonomous Super translations are correct on the easy regime where they apply.
-\item \textbf{Medium instances ($n=25,50$)}: QAOA (SV1 and Rigetti) consistently produces the best refined-cluster cost. At $n=25$ across all four slots, SV1 and Rigetti tie at the best value while clustered Gurobi is up to 8\% worse. At $n=50$ they remain best in all four slots.
-\item \textbf{Large instance ($n=100$)}: Rigetti achieves the best cost in three of four slots (Midday, Evening Peak, Night) and SV1 in the fourth (Morning Peak). D-Wave is consistently within 0.5\% of the best, while Quanfluence trails by 7--14\% as the QUBO grows.
+\item \textbf{Slot-dependence is real and large}. At $n=100$, the Gurobi cost moves from 37\,126\,s at Night to 56\,269\,s at Morning Peak---a 51\% increase due to departure time.
+\item \textbf{Small instances ($n=5,10$)}: every solver returns the same optimal cost in every slot. 
+\item \textbf{Medium instances ($n=25,50$)}: QAOA (SV1 and Rigetti) consistently produces the minimum cost. 
+\item \textbf{Large instance ($n=100$)}: Rigetti achieves the best cost in three of the four time slots and SV1 in the fourth. D-Wave is consistently within 0.5\% of the best, while Quanfluence trails by 7--14\% as the QUBO grows.
 \end{itemize}
 
 \subsection{Computational Time Analysis}
 
-Table~\ref{tab:results_time} presents wall-clock solve times for each solver, averaged over the four time slots. These times include all overhead: cost-matrix loading, QUBO/MILP construction, API communication, queue delays, and 2-opt post-processing. Each cell is the mean of four runs (one per slot); slot-to-slot variation is dominated by cloud queue jitter and never exceeds the differences between solvers.
+Table~\ref{tab:results_time} presents wall-clock solve times for each solver, averaged over the four time slots. These times include all overhead: cost-matrix loading, QUBO/MILP construction, API communication, queue delays, and 2-opt post-processing. Each cell is the mean of four runs, one per slot, 
+%slot-to-slot variation is dominated by cloud queue jitter and never exceeds the differences between solvers.
 
 \begin{table}[htbp]
 \caption{Computational Time (seconds, mean over 4 time slots)}
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|c|}
 \hline
-\textbf{Cities} & \textbf{Gurobi} & \textbf{D-Wave} & \textbf{Quanfl.} & \textbf{SV1} & \textbf{Rigetti} \\
+\textbf{Nodes} & \textbf{Gurobi} & \textbf{D-Wave} & \textbf{Quanfl.} & \textbf{SV1} & \textbf{Rigetti} \\
 \hline
 5   & \textbf{0.5} & 17.5  & 1.6  & 15.0  & 79.7  \\
 \hline
@@ -374,39 +405,39 @@ Table~\ref{tab:results_time} presents wall-clock solve times for each solver, av
 \end{center}
 \end{table}
 
-The classical Gurobi solver remains fastest at every size, finishing the $n=100$ TD-TSP in roughly half a second on average. Among the quantum and quantum-inspired backends, Quanfluence is the fastest end-to-end (12.8\,s mean at $n=100$), while QAOA on Rigetti is the slowest---the 546.9\,s mean at $n=100$ is dominated by AWS Braket queue time across the 20 clusters submitted per run, not by on-device circuit execution. D-Wave and SV1 sit between these two extremes and scale near-linearly in the number of clusters.
+The classical Gurobi solver remains fastest at every size, finishing the $n=100$ TD-TSP in roughly half a second on average. Among others, Quanfluence is the fastest end-to-end (12.8\,s mean at $n=100$), while QAOA on Rigetti is the slowest---the 546.9\,s mean at $n=100$ is dominated by AWS Braket queue time. D-Wave and SV1 sit between these two extremes and scale near-linearly in the number of clusters.
 
-\subsection{Real Quantum Hardware Validation}
+%\subsection{Quantum Hardware Validation}
 
-A critical contribution of this work is the validation of our cluster-QAOA approach on real quantum hardware. Table~\ref{tab:qpu_comparison} compares the final tour cost in seconds between the SV1 simulator and the Rigetti Cepheus-1-108Q QPU at the Morning Peak slot (08:00 departure); the Rigetti raw 500-shot histograms for every (size, slot) pair are archived in \texttt{results/raw\_tdtsp\_qaoa\_rigetti.json}\footnote{SV1 runs use QAOA depth $p=2$; Rigetti runs use $p=1$, because at $p=2$ the 25-qubit (5-city) cluster circuit transpiles to roughly 21\,000 native gates and exceeds the 20\,000-gate per-task budget on Cepheus-1-108Q. All other pipeline parameters are identical.}.
+%A critical contribution of this work is the validation of our cluster-QAOA approach on real quantum hardware. Table~\ref{tab:qpu_comparison} compares the final tour cost in seconds between the SV1 simulator and the Rigetti Cepheus-1-108Q QPU at the Morning Peak slot (08:00 departure); the Rigetti raw 500-shot histograms for every (size, slot) pair are archived in \texttt{results/raw\_tdtsp\_qaoa\_rigetti.json}\footnote{SV1 runs use QAOA depth $p=2$; Rigetti runs use $p=1$, because at $p=2$ the 25-qubit (5-city) cluster circuit transpiles to roughly 21\,000 native gates and exceeds the 20\,000-gate per-task budget on Cepheus-1-108Q. All other pipeline parameters are identical.}.
 
-\begin{table}[htbp]
-\caption{Simulator vs.\ Real QPU at Morning Peak (08:00), Tour Cost in Seconds}
-\begin{center}
-\begin{tabular}{|c|c|c|c|}
-\hline
-\textbf{Cities} & \textbf{SV1 (Sim, $p{=}2$)} & \textbf{Rigetti (QPU, $p{=}1$)} & \textbf{Difference} \\
-\hline
-5   & 3864  & 3829  & --0.9\% \\
-\hline
-10  & 6736  & 6736  & 0.0\%   \\
-\hline
-25  & 19825 & 19825 & 0.0\%   \\
-\hline
-50  & 34416 & 34416 & 0.0\%   \\
-\hline
-100 & 55334 & 56164 & +1.5\%  \\
-\hline
-\end{tabular}
-\label{tab:qpu_comparison}
-\end{center}
-\end{table}
+%\begin{table}[htbp]
+%\caption{Simulator vs.\ Real QPU at Morning Peak (08:00), Tour Cost in Seconds}
+%\begin{center}
+%\begin{tabular}{|c|c|c|c|}
+%\hline
+%\textbf{Nodes} & \textbf{SV1 (Sim, $p{=}2$)} & \textbf{Rigetti (QPU, $p{=}1$)} & \textbf{Difference} \\
+%\hline
+%5   & 3864  & 3829  & --0.9\% \\
+%\hline
+%10  & 6736  & 6736  & 0.0\%   \\
+%\hline
+%25  & 19825 & 19825 & 0.0\%   \\
+%\hline
+%50  & 34416 & 34416 & 0.0\%   \\
+%\hline
+%100 & 55334 & 56164 & +1.5\%  \\
+%\hline
+%\end{tabular}
+%\label{tab:qpu_comparison}
+%\end{center}
+%\end{table}
 
-The results show strong agreement between simulator and real hardware on the TD-TSP cost surface. For $n \in \{10, 25, 50\}$ the two backends find numerically identical tours despite Rigetti running at half the QAOA depth, because the 2-opt refinement step erases the small differences in raw bitstring quality. At $n=5$ Rigetti is actually 0.9\% better than SV1---the single-cluster cluster-QAOA at $p=2$ on SV1 happens to converge to a slightly suboptimal angle that 2-opt cannot escape with only one cluster, while the lower-depth Rigetti circuit lands on the optimal tour. At $n=100$ the QPU is 1.5\% behind the simulator, an expected gap given the 20-cluster decomposition and shot noise on each cluster. Overall, the cluster-QAOA pipeline transfers from simulation to real quantum hardware without significant degradation.
+%The results show strong agreement between simulator and real hardware on the TD-TSP cost surface. For $n \in \{10, 25, 50\}$ the two backends find numerically identical tours despite Rigetti running at half the QAOA depth, because the 2-opt refinement step erases the small differences in raw bitstring quality. At $n=5$ Rigetti is actually 0.9\% better than SV1---the single-cluster cluster-QAOA at $p=2$ on SV1 happens to converge to a slightly suboptimal angle that 2-opt cannot escape with only one cluster, while the lower-depth Rigetti circuit lands on the optimal tour. At $n=100$ the QPU is 1.5\% behind the simulator, an expected gap given the 20-cluster decomposition and shot noise on each cluster. Overall, the cluster-QAOA pipeline transfers from simulation to real quantum hardware without significant degradation.
 
 \subsection{Impact of 2-opt Post-Processing}
 
-The asymmetry-aware 2-opt local search proves essential for the refined cluster pipeline. Table~\ref{tab:two_opt} shows the raw stitched tour cost (\texttt{raw\_distance\_pre\_2opt} in the result JSONs) and the final cost after 2-opt for each quantum/quantum-inspired backend on the $n=100$ instance at the Morning Peak slot. Both columns are in seconds and were extracted directly from \texttt{results/results\_tdtsp\_*.json}.
+The asymmetry-aware 2-opt local search proves essential for the refined clustered pipeline. Table~\ref{tab:two_opt} shows the raw stitched tour cost (\texttt{raw\_distance\_pre\_2opt} in the result JSONs) and the final cost after 2-opt for each quantum/quantum-inspired backend on the $n=100$ instance at the Morning Peak slot. Values were extracted directly from \texttt{results/results\_tdtsp\_*.json}.
 
 \begin{table}[htbp]
 \caption{2-opt Improvement on $n=100$, Morning Peak (08:00)}
@@ -428,18 +459,43 @@ QAOA (Rigetti) & 71774 & 56164 & 21.7\% \\
 \end{center}
 \end{table}
 
-The 2-opt step yields improvements ranging from 2.8\% on D-Wave to 30.5\% on Quanfluence. D-Wave's hybrid CQM sampler already returns a near-optimal stitched tour, so 2-opt has very little headroom to recover. The two QAOA variants behave nearly identically (21.5\% vs 21.7\%), confirming that on the TD-TSP the gap between $p=1$ and $p=2$ QAOA at the cluster level is largely closed by the local search. Quanfluence, which produces the largest raw-tour cost, also benefits the most from refinement, which is consistent with the autonomous Super translation being driven directly by a coherent Ising machine without intermediate classical heuristics.
+The 2-opt step yields improvements ranging from 2.8\% on D-Wave to 30.5\% on Quanfluence. D-Wave's hybrid CQM sampler already returns a near-optimal stitched tour. The two QAOA variants behave nearly identically (21.5\% vs 21.7\%), confirming that on the TD-TSP the gap between $p=1$ and $p=2$ QAOA at the cluster level is bridged by the local search. 
+
+%Quanfluence, which produces the largest raw-tour cost, also benefits the most from refinement, which is consistent with the autonomous Super translation being driven directly by a coherent Ising machine without intermediate classical heuristics.
 
 \subsection{Approximation Ratio Analysis}
+\label{sec:approx_ratio}
 
-We compute the approximation ratio $r = C_{\text{solver}} / C_{\text{ref}}$ where $C_{\text{ref}}$ is the autonomous Gurobi MILP optimum for $n \in \{5, 10, 25, 50\}$ (the autonomous MILP is feasible up to $n=50$ and gives the true global optimum), and the cluster-Gurobi cost for $n=100$ (no autonomous baseline is available because the unclustered MILP exceeds our 1-hour time limit). Each cell is the mean of the four time-slot ratios, which agree to within $\pm$0.5\% across slots in every entry.
+Following the definition in the Evaluation Metrics section, we compute $r = C_{\text{solver}} / C_{\text{ref}}$ where $C_{\text{ref}}$ is the single-cluster Gurobi MILP optimum for $n \in \{5, 10, 25, 50\}$ and the cluster-Gurobi cost for $n = 100$. Table~\ref{tab:single_cluster_baseline} reports the single-cluster reference values so that every ratio in Table~\ref{tab:approx_ratio} can be reproduced directly from two visible tables. Each cell in Table~\ref{tab:approx_ratio} is the mean of the four time-slot ratios, which agree to within $\pm$0.5\% across slots in every entry.
 
 \begin{table}[htbp]
-\caption{Approximation Ratios vs.\ Autonomous Baseline (Lower is Better)}
+\caption{Single-Cluster Gurobi Baseline: Tour Cost (seconds)}
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\textbf{Nodes} & \textbf{Morning Peak} & \textbf{Midday} & \textbf{Evening Peak} & \textbf{Night} \\
+\hline
+5   & 3829  & 3837  & 4013  & 3271  \\
+\hline
+10  & 6736  & 6616  & 6789  & 5373  \\
+\hline
+25  & 19665 & 16960 & 17469 & 13401 \\
+\hline
+50  & 30983 & 26100 & 27216 & 20531 \\
+\hline
+100 & \multicolumn{4}{c|}{single-cluster MILP did not terminate; cluster-Gurobi from Table~\ref{tab:results_quality} used as $C_{\text{ref}}$} \\
+\hline
+\end{tabular}
+\label{tab:single_cluster_baseline}
+\end{center}
+\end{table}
+
+\begin{table}[htbp]
+\caption{Approximation Ratios vs.\ Single-Cluster Gurobi Baseline (Lower is Better)}
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|c|}
 \hline
-\textbf{Cities} & \textbf{Gurobi} & \textbf{D-Wave} & \textbf{Quanfl.} & \textbf{SV1} & \textbf{Rigetti} \\
+\textbf{Nodes} & \textbf{Gurobi} & \textbf{D-Wave} & \textbf{Quanfl.} & \textbf{SV1} & \textbf{Rigetti} \\
 \hline
 5   & \textbf{1.000} & \textbf{1.000} & \textbf{1.000} & 1.002          & \textbf{1.000} \\
 \hline
@@ -456,7 +512,7 @@ We compute the approximation ratio $r = C_{\text{solver}} / C_{\text{ref}}$ wher
 \end{center}
 \end{table}
 
-For $n \leq 50$ the comparison is against the true MILP optimum, and the table cleanly exposes the cost of cluster decomposition: at $n=25$ clustered Gurobi already lags the autonomous Gurobi by 8.2\%, while QAOA (SV1 and Rigetti) is only 0.8\% off. At $n=50$ all refined solvers cluster around the same $\approx$11--14\% gap because they share the same K-means partition. At $n=100$ the baseline switches to clustered Gurobi (the autonomous MILP no longer terminates), so any value below 1.0 means the solver beat clustered Gurobi: SV1, Rigetti, and D-Wave all do, with Rigetti the best at 0.971. Quanfluence remains the only solver consistently above 1.0 at large scale.
+For $n \leq 50$ the comparison is against the true MILP optimum, and the table cleanly exposes the cost of cluster decomposition: at $n=25$ clustered Gurobi already lags the single-cluster Gurobi by 8.2\%, while QAOA (SV1 and Rigetti) is only 0.8\% off. At $n=50$ all refined solvers cluster around the same $\approx$11--14\% gap because they share the same K-means partition. At $n=100$ the baseline switches to clustered Gurobi (the single-cluster MILP no longer terminates), so any value below 1.0 means the solver beat clustered Gurobi: SV1, Rigetti, and D-Wave all do, with Rigetti the best at 0.971. Quanfluence remains the only solver consistently above 1.0 at large scale.
 
 \subsection{Cluster Scaling Behavior}
 
@@ -467,7 +523,7 @@ The number of clusters required scales with problem size according to hardware-s
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|}
 \hline
-\textbf{Cities} & \textbf{Gurobi} & \textbf{D-Wave} & \textbf{Quanfl.} & \textbf{QAOA} \\
+\textbf{Nodes} & \textbf{Gurobi} & \textbf{D-Wave} & \textbf{Quanfl.} & \textbf{QAOA} \\
 \hline
 5   & 1 & 1 & 1  & 1  \\
 \hline
@@ -484,11 +540,11 @@ The number of clusters required scales with problem size according to hardware-s
 \end{center}
 \end{table}
 
-QAOA requires the most clusters because the cluster size is bounded by the number of qubits ($n^2$ for an $n$-city cluster), giving a maximum of 5 cities (25 qubits) per cluster on both SV1 and Rigetti. On Rigetti, the same 25-qubit limit is forced by the 20\,000-gate per-task budget on Cepheus-1-108Q at $p=1$; running at $p=2$ would inflate the same circuit to roughly 21\,000 gates and fail compilation, which is why all Rigetti runs in this paper use $p=1$. Gurobi and D-Wave can ingest much larger clusters (up to 15 cities), so they need roughly half as many partitions. Despite the smaller clusters, QAOA maintains competitive solution quality through the 2-opt refinement reported in Table~\ref{tab:two_opt}.
+QAOA requires the most clusters because the cluster size is bounded by the number of qubits ($n^2$ for an $n$-city cluster), giving a maximum of 5 nodes (25 qubits) per cluster on both SV1 and Rigetti. On Rigetti, the same 25-qubit limit is forced by the 20\,000-gate per-task budget on Cepheus-1-108Q at $p=1$; running at $p=2$ would inflate the same circuit to roughly 21\,000 gates and fail compilation, which is why all Rigetti runs in this paper use $p=1$. Gurobi and D-Wave can ingest much larger clusters (up to 15 nodes), so they need roughly half as many partitions. Despite the smaller clusters, QAOA maintains competitive solution quality through the 2-opt refinement reported in Table~\ref{tab:two_opt}.
 
 \subsection{Sources and Regeneration}
 
-Every number in Tables~\ref{tab:results_quality}--\ref{tab:clusters} can be regenerated from the artifacts in the public repository. The five summary JSONs \texttt{results/results\_tdtsp\_\{gurobi, dwave, quanfluence, qaoa\_sv1, qaoa\_rigetti\}.json} contain the per-(size, slot) tour cost, solve time, cluster count, raw pre-2-opt cost, and full schedule with departure/arrival clock times. The autonomous Super baselines used for Table~\ref{tab:approx_ratio} live in \texttt{results/results\_tdtsp\_gurobi\_autonomous.json} and cover $n \in \{5, 10, 25, 50\}$. The 500-shot QAOA measurement histograms used to drive the QPU runs are archived per-cluster in \texttt{results/raw\_tdtsp\_qaoa\_sv1.json} and \texttt{results/raw\_tdtsp\_qaoa\_rigetti.json}. The instance files \texttt{data/instances/tdtsp\_n*.json} embed both the nominal and the empirical Google Maps multipliers (Table~\ref{tab:slot_params}) so that the TD-TSP cost surface is fully self-contained.
+Every number in Tables~\ref{tab:results_quality}--\ref{tab:clusters} can be regenerated from the artifacts in the public repository. The five summary JSONs \texttt{results/results\_tdtsp\_\{gurobi, dwave, quanfluence, qaoa\_sv1, qaoa\_rigetti\}.json} contain the per-(size, slot) tour cost, solve time, cluster count, raw pre-2-opt cost, and full schedule with departure/arrival clock times. The single-cluster Gurobi baselines used for Table~\ref{tab:approx_ratio} (and listed in Table~\ref{tab:single_cluster_baseline}) live in \texttt{results/results\_tdtsp\_gurobi\_autonomous.json} and cover $n \in \{5, 10, 25, 50\}$. The 500-shot QAOA measurement histograms used to drive the QPU runs are archived per-cluster in \texttt{results/raw\_tdtsp\_qaoa\_sv1.json} and \texttt{results/raw\_tdtsp\_qaoa\_rigetti.json}. The instance files \texttt{data/instances/tdtsp\_n*.json} embed both the nominal and the empirical Google Maps multipliers (Table~\ref{tab:slot_params}) so that the TD-TSP cost surface is fully self-contained.
 
 \section{Discussion}
 
@@ -502,7 +558,7 @@ Our benchmarks do not demonstrate quantum advantage in the traditional sense---G
 
 \textbf{D-Wave} excels at producing high-quality \emph{raw} stitched solutions before 2-opt is applied: at $n=100$ Morning Peak its raw cost (57\,725\,s) is closer to the post-refinement optimum than any other backend (Table~\ref{tab:two_opt}), so 2-opt has very little headroom to recover. After refinement it sits within 0.5\% of the best final cost in every slot, but does not strictly win any $n=100$ slot.
 
-\textbf{Quanfluence} offers the best speed-quality tradeoff for medium instances (25--50 cities) but struggles at 100 cities, possibly due to QUBO scaling limitations in the coherent Ising machine approach.
+\textbf{Quanfluence} offers the best speed-quality tradeoff for medium instances (25--50 nodes) but struggles at 100 nodes, possibly due to QUBO scaling limitations in the coherent Ising machine approach.
 
 \textbf{QAOA on Rigetti} successfully validates the cluster-based approach on real quantum hardware, with results closely matching simulation. The 20,000 gate limit necessitates small clusters but does not prevent competitive performance.
 
@@ -523,7 +579,7 @@ This paper presented a comprehensive benchmarking study comparing classical, qua
 \begin{enumerate}
 \item \textbf{Multi-Platform Implementation}: We developed and evaluated TSP solvers across four distinct computational paradigms---classical MILP (Gurobi), quantum annealing (D-Wave), gate-based quantum computing (QAOA on AWS Braket), and quantum-inspired computing (Quanfluence Ising machine).
 
-\item \textbf{Cluster-Based Scalability}: We introduced a unified cluster decomposition framework that enables all solvers to address problem sizes (up to 100 cities) beyond the native capabilities of current quantum hardware.
+\item \textbf{Cluster-Based Scalability}: We introduced a unified cluster decomposition framework that enables all solvers to address problem sizes (up to 100 nodes) beyond the native capabilities of current quantum hardware.
 
 \item \textbf{Real QPU Validation}: We successfully executed QAOA on the Rigetti Cepheus-1-108Q quantum processor, demonstrating that cluster-based quantum optimization transfers effectively from simulation to real hardware with minimal performance degradation.
 
@@ -534,7 +590,7 @@ This paper presented a comprehensive benchmarking study comparing classical, qua
 
 Our experiments reveal that:
 \begin{itemize}
-\item All solvers achieve \textbf{identical optimal solutions} for small instances (5--10 cities), validating correctness across platforms.
+\item All solvers achieve \textbf{identical optimal solutions} for small instances (5--10 nodes), validating correctness across platforms.
 \item \textbf{Quantum and quantum-inspired solvers match or exceed} clustered classical performance on medium-to-large instances when combined with 2-opt post-processing.
 \item \textbf{D-Wave} produces the highest-quality \emph{raw} stitched solutions (only $\approx 3\%$ of room for 2-opt to recover at $n=100$), and finishes within 0.5\% of the best refined cost in every $n=100$ slot. \textbf{QAOA} (SV1 and Rigetti) achieves the best refined cost at $n=100$: Rigetti wins three of four slots and SV1 the fourth.
 \item \textbf{2-opt refinement is essential}, improving QAOA and Quanfluence raw solutions by 20--30\% (and D-Wave's already near-optimal raw solution by $\approx 3\%$), enabling competitive performance despite hardware limitations.
@@ -545,7 +601,7 @@ Our experiments reveal that:
 
 Several directions merit further investigation:
 \begin{itemize}
-\item \textbf{Larger problem scales}: Testing on instances with 500--1000+ cities to assess scaling behavior of the cluster approach.
+\item \textbf{Larger problem scales}: Testing on instances with 500--1000+ nodes to assess scaling behavior of the cluster approach.
 \item \textbf{Alternative quantum algorithms}: Evaluating Grover-based approaches, quantum walks, and variational quantum linear solvers for TSP.
 \item \textbf{Error mitigation}: Implementing zero-noise extrapolation and probabilistic error cancellation to improve real QPU solution quality.
 \item \textbf{Time-dependent benchmarks}: Extending experiments to full TD-TSP with dynamic traffic patterns across multiple time windows.
@@ -555,7 +611,7 @@ Several directions merit further investigation:
 
 \section*{Acknowledgment}
 
-The authors acknowledge SuperQ Quantum Computing Inc. for providing access to the Super autonomous optimization platform and supporting this research. We thank Quanfluence for access to their Ising machine API. The third author thanks the University of Northern British Columbia for institutional support.
+The authors acknowledge SuperQ Quantum Computing Inc. for providing access to the Super autonomous optimization platform and supporting this research. The third author thanks the University of Northern British Columbia for institutional support.
 
 
 \begin{thebibliography}{00}
